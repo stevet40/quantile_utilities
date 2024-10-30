@@ -275,5 +275,39 @@ def pca(X, X_alt=None, method="cov"):
     else:
         return l, V, X@V, X_alt@V
 
+def wp_univariate(Y, Y_alt, p=2):
+    """
+    Univariate Wasserstein distance.
 
+    Parameters
+    ----------
+    Y : array-like
+        One dimensional array
+    Y_alt : array-like
+        Second array
+    p : int, optional
+        Norm to use. Default is p=2 -> L2 norm.
+    """
 
+    # check inputs
+    if isinstance(Y, list):
+        Y = np.array(Y)
+    if isinstance(Y_alt, list):
+        Y_alt = np.array(Y_alt)
+    if Y.ndim > 1 or Y_alt.ndim > 1:
+        raise ValueError("Input arrays should be one-dimensional. Found ndim = {:d} and {:d} for Y and Y_alt.".format(Y.ndim, Y_alt.ndim))
+
+    # smallest sample size
+    N = np.min([len(Y), len(Y_alt)])
+
+    if p == np.inf: # infinity norm
+        w = lambda a, b : np.max(np.fabs(a - b))
+    else: # Lp norm
+        w = lambda a, b : np.mean(np.fabs(a - b)**p)**(1/p)
+    if len(Y_alt) == len(Y):
+        W = w(np.sort(Y), np.sort(Y_alt))
+    elif len(Y_alt) > len(Y):
+        W = w(np.sort(Y), np.random.choice(Y_alt, len(Y), replace=False))
+    else:
+        W = w(np.sort(Y_alt), np.random.choice(Y, len(Y_alt), replace=False))
+    return W
