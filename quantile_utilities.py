@@ -16,7 +16,7 @@ def qq_plot(Y_ref, Y_alt, Q=99, B=None, residual=False, ax=None, figsize=None, x
         Number of quantiles to compute (default=99; i.e. percentiles).
         If None, will attempt an unbinned Q-Q plot by plotting np.sort(Y_alt) vs. np.sort(Y_ref)
     B : int or None, optional
-        Number of bootstrap realisations to use for computing the uncertainty envelope.
+        Number of bootstrap realizations to use for computing the uncertainty envelope.
         If None (default), no envelope will be computed.
     residual : bool, optional
         Plot the residuals about the diagonal. Default is False.
@@ -134,7 +134,7 @@ def pp_plot(Y_ref, Y_alt, Q=None, B=None, residual=False, ax=None, figsize=None,
         Number of quantiles to compute (default=None).
         If None, will use the unbinned Y_ref
     B : int or None, optional
-        Number of bootstrap realisations to use for computing the uncertainty envelope.
+        Number of bootstrap realizations to use for computing the uncertainty envelope.
         If None (default), no envelope will be computed.
     residual : bool, optional
         Plot the residuals about the diagonal. Default is False.
@@ -231,4 +231,49 @@ def pp_plot(Y_ref, Y_alt, Q=None, B=None, residual=False, ax=None, figsize=None,
     else:
         ax.set_ylabel(ylabel)
     return ax
+
+def pca(X, X_alt=None, method="cov"):
+    """
+    Perform a principal component analysis (PCA).
+
+    Parameters
+    ----------
+    X : array-like
+        Data matrix to perform PCA on (shape N, D)
+    X_alt : array-like, optional
+        Second data matrix to be projected along the principal axes of the first
+    method : "cov" or "svd"
+        Method used to perform the PCA. The data covariance is used if method=="cov". Else, a singular value decomposition is used. Default is "cov".
+
+    Returns
+    -------
+    l : numpy.array
+        Length D array containing variances explained by the principal components (eigenvalues)
+    V : numpy.array
+        Matrix (D,D), whose dth column is the dth principal component (eigenvectors)
+    Y : array-like
+        Projection of X
+    Y_alt : numpy.array
+        Projection of X_alt (if Y_alt provided)
+    """
+
+    if method == "cov":
+        C = np.cov(X, rowvar=False)
+        l, V = np.linalg.eig(C)
+        V = V[:,np.argsort(l)[::-1]] # sort descending
+        l = np.sort(l)[::-1]
+    elif method == "svd":
+        X_ = X - np.mean(X, axis=0) # mean center
+        U, S, V_ = np.linalg.svd(X_)
+        V = V_.T
+        l = S**2/(len(X)-1)
+    else:
+        raise ValueError("Method must be one of 'cov' or 'svd'. Found {}".format(method))
+
+    if X_alt is None:
+        return l, V, X@V
+    else:
+        return l, V, X@V, X_alt@V
+
+
 
