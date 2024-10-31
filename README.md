@@ -1,5 +1,7 @@
 # quantile_utilities
 
+[![DOI](https://zenodo.org/badge/880716319.svg)](https://doi.org/10.5281/zenodo.14018635)
+
 This repository contains some useful functions, and a demo notebook, for quantile-based sample comparison. Utilities include:
 - Quantile-quantile (Q-Q) and probability-probability (P-P) plots
 - Univariate Wasserstein distances
