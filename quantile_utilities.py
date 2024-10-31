@@ -277,7 +277,7 @@ def pca(X, X_alt=None, method="cov"):
 
 def wp_univariate(Y, Y_alt, p=2):
     """
-    Univariate Wasserstein distance.
+    Univariate Wasserstein distance based on two samples.
 
     Parameters
     ----------
