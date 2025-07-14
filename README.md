@@ -1,6 +1,7 @@
 # quantile_utilities
-
-[![DOI](https://zenodo.org/badge/880716319.svg)](https://doi.org/10.5281/zenodo.14018635)
+[![Static Badge](https://img.shields.io/badge/arXiv-2402.00930-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2402.00930)
+[![DOI](https://img.shields.io/badge/DOI-10.3847%2F1538--4365%2Fad8ebd-%23fab70c?logo=doi&logoColor=%23fab70c)](https://doi.org/10.3847/1538-4365/ad8ebd)
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.14018635-%231682D4?logo=zenodo&logoColor=white)](https://doi.org/10.5281/zenodo.14018635)
 
 This repository contains some useful functions, and a demo notebook, for quantile-based sample comparison. Utilities include:
 - Quantile-quantile (Q-Q) and probability-probability (P-P) plots
